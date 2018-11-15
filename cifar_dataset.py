@@ -5,6 +5,7 @@
 
 import tensorflow as tf
 import numpy as np
+import pickle
 
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import image_ops
@@ -17,8 +18,24 @@ TEST_FILE       = 'cifar10_test.tfrecord'
 train_dataset_size = 50000
 test_dataset_size = 10000
 
-def normalize(image, label):
-    image = (tf.cast(image, tf.float32) / 255) - 0.5
+f = open('cifar_mean_image.pickle', 'rb')
+cifar_mean_image = pickle.load(f)
+f.close()
+
+def normalize_train(image, label):
+    image = (tf.cast(image, tf.float32) - cifar_mean_image['train']) / 255
+
+    return image, label
+
+def normalize_test(image, label):
+    image = (tf.cast(image, tf.float32) - cifar_mean_image['test']) / 255
+
+    return image, label
+
+def augment(image, label):
+    flipped_image = tf.image.random_flip_left_right(image)
+    padded_image = tf.pad(flipped_image, [[0,0], [4,4], [4,4], [0,0]], 'CONSTANT')
+    cropped_image = tf.random_crop(padded_image, [1, 32, 32, 3])
 
     return image, label
 
@@ -44,14 +61,15 @@ def inputs(batch_size):
         train_dataset = train_dataset.shuffle(50000)
         train_dataset = train_dataset.batch(batch_size)
         train_dataset = train_dataset.map(decode)
-        train_dataset = train_dataset.map(normalize)
-        train_dataset = train_dataset.prefetch(batch_size*3)
+        train_dataset = train_dataset.map(normalize_train) # commented while calculating mean
+        train_dataset = train_dataset.map(augment)
+        train_dataset = train_dataset.prefetch(batch_size*5)
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
         test_dataset = test_dataset.batch(batch_size)
         test_dataset = test_dataset.map(decode)
-        test_dataset = test_dataset.map(normalize)
-        test_dataset = test_dataset.prefetch(batch_size*3)
+        test_dataset = test_dataset.map(normalize_test) # commented while calculating mean
+        test_dataset = test_dataset.prefetch(batch_size*5)
 
         iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)
         train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')

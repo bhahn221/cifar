@@ -9,14 +9,14 @@ import utils
 
 slim = tf.contrib.slim
 
-import model
-MODEL='model'
+import resnet
+MODEL='resnet18_aug'
 
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=50000
 CIFAR_TEST_SIZE=10000
-BATCH_SIZE=100
-LEARNING_RATE=1e-5
+BATCH_SIZE=128
+LEARNING_RATE=1e-4
 N_EPOCH=120
 
 def main(args):
@@ -27,17 +27,17 @@ def main(args):
     x, y = cifar_dataset.inputs(BATCH_SIZE)
 
     # TODO define model
-    logits = model.model(x)
+    logits = resnet.resnet18(x)
 
     # TODO define loss
-    loss = model.loss(logits, y)
+    loss = resnet.loss(logits, y)
 
     # TODO define summary
-    summary_op = model.summary(loss)
+    summary_op = resnet.summary(loss)
     
     # TODO define training & testing
-    train_op = model.training(loss)
-    test_op = model.testing(logits, y)
+    train_op = resnet.training(loss)
+    test_op = resnet.testing(logits, y)
 
     # initializer
     sess.run(tf.global_variables_initializer())
@@ -58,8 +58,8 @@ def main(args):
 
     # get dropout & global_step
     graph = tf.get_default_graph()
-    dropout1 = graph.get_tensor_by_name('model/dropout1:0')
-    dropout2 = graph.get_tensor_by_name('model/dropout2:0')
+    #dropout1 = graph.get_tensor_by_name('model/dropout1:0')
+    #dropout2 = graph.get_tensor_by_name('model/dropout2:0')
     global_step = graph.get_tensor_by_name('train/global_step:0')
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
@@ -80,9 +80,7 @@ def main(args):
             print('Epoch: {}'.format(index / n_batch))
 
         _, batch_summary, batch_loss = sess.run([train_op, summary_op, loss], 
-                                                feed_dict={dropout1: 0.25,
-                                                           dropout2: 0.5,
-                                                           learning_rate: LEARNING_RATE})
+                                                feed_dict={learning_rate: LEARNING_RATE})
         
         # write summary
         writer.add_summary(batch_summary, global_step=index)
@@ -105,9 +103,7 @@ def main(args):
     # run test
     total_correct = 0
     for index in range(n_batch):
-        batch_summary, batch_correct = sess.run([summary_op, test_op],
-                                             feed_dict={dropout1: 1.0,
-                                                        dropout2: 1.0})
+        batch_summary, batch_correct = sess.run([summary_op, test_op])
         
         total_correct += batch_correct
 
