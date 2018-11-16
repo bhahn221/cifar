@@ -44,31 +44,27 @@ def _resblk(x, kernel, name='unit'):
 def resnet18(x):
     with tf.variable_scope('resnet18'):
         with tf.variable_scope('conv1'):
-            #x = tf.layers.conv2d(x, 64, 7, (2, 2), name='conv1') # for imagenet
-            x = tf.layers.conv2d(x, 64, 3, (1, 1), name='conv1') # for cifar10
+            x = tf.layers.conv2d(x, 16, 3, (1, 1), padding='SAME', name='conv1') # for cifar10
             x = tf.layers.batch_normalization(x, name='bn1')
-            #x = tf.nn.relu(x, name='relu1') # for imagenet
-            #x = tf.layers.max_pooling2d(x, 3, 2, padding='SAME', name='pool1') # for imagenet
 
         with tf.variable_scope('conv2'):
             x = _resblk(x, 3, name='conv2_1')
             x = _resblk(x, 3, name='conv2_2')
+            x = _resblk(x, 3, name='conv2_3')
         
         with tf.variable_scope('conv3'):
-            x = _resblk_first(x, 128, 3, 2, name='conv3_1')
+            x = _resblk_first(x, 32, 3, 2, name='conv3_1')
             x = _resblk(x, 3, name='conv3_2')
+            x = _resblk(x, 3, name='conv3_3')
 
         with tf.variable_scope('conv4'):
-            x = _resblk_first(x, 256, 3, 2, name='conv4_1')
+            x = _resblk_first(x, 64, 3, 2, name='conv4_1')
             x = _resblk(x, 3, name='conv4_2')
+            x = _resblk(x, 3, name='conv4_3')
 
-        with tf.variable_scope('conv5'):
-            x = _resblk_first(x, 512, 3, 2, name='conv5_1')
-            x = _resblk(x, 3, name='conv5_2')
-
-        with tf.variable_scope('fc6'):
+        with tf.variable_scope('fc5'):
             x = tf.reduce_mean(x, axis=[1,2])
-            logits = tf.layers.dense(x, 10, name='fc6')
+            logits = tf.layers.dense(x, 10, name='fc5')
 
     return logits
 
@@ -92,7 +88,11 @@ def training(loss):
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
         
         global_step = tf.Variable(0, dtype=tf.int32, trainable=False, name='global_step')
-        optimizer = tf.train.AdamOptimizer(learning_rate, name='optimizer')
+        #optimizer = tf.train.AdamOptimizer(learning_rate, name='optimizer')
+        optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, 
+                                               momentum=0.9,
+                                               use_nesterov=True,
+                                               name='optimizer')
         train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
     
     return train_op

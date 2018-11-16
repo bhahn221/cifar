@@ -9,12 +9,12 @@ import utils
 
 slim = tf.contrib.slim
 
-MODEL='model'
+MODEL='resnet18'
 
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
-BATCH_SIZE=100
+BATCH_SIZE=128
 LEARNING_RATE=1e-4
 N_EPOCH=1
 
@@ -32,8 +32,8 @@ def main(args):
 
     # get dropout & global_step
     graph = tf.get_default_graph()
-    dropout1 = graph.get_tensor_by_name('model/dropout1:0')
-    dropout2 = graph.get_tensor_by_name('model/dropout2:0')
+    #dropout1 = graph.get_tensor_by_name('model/dropout1:0')
+    #dropout2 = graph.get_tensor_by_name('model/dropout2:0')
     global_step = graph.get_tensor_by_name('train/global_step:0')
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
@@ -48,7 +48,7 @@ def main(args):
     # run test
     total_correct = 0
     for index in range(n_batch):
-        batch_correct = sess.run(test_op, feed_dict={dropout1: 1.0, dropout2: 1.0})
+        batch_correct = sess.run(test_op)
         
         total_correct += batch_correct
 

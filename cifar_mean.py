@@ -46,13 +46,13 @@ def main(args):
     test_mean = test_sum.astype('float32') / CIFAR_TEST_SIZE
     print test_mean
 
-    cifar_mean_image = {}
-    cifar_mean_image['train'] = train_mean
-    cifar_mean_image['test'] = test_mean
+    #cifar_mean_image = {}
+    #cifar_mean_image['train'] = train_mean
+    #cifar_mean_image['test'] = test_mean
 
-    f=open('cifar_mean_image.pickle', 'wb')
-    pickle.dump(cifar_mean_image, f)
-    f.close()
+    #f=open('cifar_mean_image.pickle', 'wb')
+    #pickle.dump(cifar_mean_image, f)
+    #f.close()
         
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='get CIFAR mean image')

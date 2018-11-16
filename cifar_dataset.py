@@ -63,13 +63,13 @@ def inputs(batch_size):
         train_dataset = train_dataset.map(decode)
         train_dataset = train_dataset.map(normalize_train) # commented while calculating mean
         train_dataset = train_dataset.map(augment)
-        train_dataset = train_dataset.prefetch(batch_size*5)
+        train_dataset = train_dataset.prefetch(batch_size*3)
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
         test_dataset = test_dataset.batch(batch_size)
         test_dataset = test_dataset.map(decode)
         test_dataset = test_dataset.map(normalize_test) # commented while calculating mean
-        test_dataset = test_dataset.prefetch(batch_size*5)
+        test_dataset = test_dataset.prefetch(batch_size*3)
 
         iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)
         train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')

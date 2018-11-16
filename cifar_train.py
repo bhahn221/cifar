@@ -10,14 +10,14 @@ import utils
 slim = tf.contrib.slim
 
 import resnet
-MODEL='resnet18_aug'
+MODEL='resnet18'
 
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=50000
 CIFAR_TEST_SIZE=10000
 BATCH_SIZE=128
-LEARNING_RATE=1e-4
-N_EPOCH=120
+LEARNING_RATE=1e-3
+N_EPOCH=80
 
 def main(args):
     # define session
