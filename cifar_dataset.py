@@ -28,19 +28,30 @@ def normalize_train(image, label):
     return image, label
 
 def normalize_test(image, label):
-    image = (tf.cast(image, tf.float32) - cifar_mean_image['test']) / 255
+    image = (tf.cast(image, tf.float32) - cifar_mean_image['train']) / 255
+    
+    return image, label
+
+def flip(image, label):
+    image = tf.image.random_flip_left_right(image)
 
     return image, label
 
-def augment(image, label):
-    flipped_image = tf.image.random_flip_left_right(image)
-    padded_image = tf.pad(flipped_image, [[0,0], [4,4], [4,4], [0,0]], 'CONSTANT')
-    cropped_image = tf.random_crop(padded_image, [1, 32, 32, 3])
+def change_light(image, label):
+    image = tf.image.random_brightness(image, max_delta=0.4)
+    image = tf.image.random_contrast(image, lower=0.6, upper=1.4)
+    image = tf.image.random_saturation(image, lower=0.6, upper=1.4)
+
+    return image, label
+
+def random_crop(image, label):
+    padded_image = tf.pad(image, [[4,4], [4,4], [0,0]], 'CONSTANT')
+    cropped_image = tf.random_crop(padded_image, [32, 32, 3])
 
     return image, label
 
 def decode(serialized_example):
-    features = tf.parse_example(
+    features = tf.parse_single_example(
         serialized_example,
         features={
             'image/encoded': tf.FixedLenFeature([], tf.string),
@@ -48,28 +59,32 @@ def decode(serialized_example):
         }
     )
 
-    image = tf.map_fn(lambda x: image_ops.decode_image(x, channels=3), features['image/encoded'], dtype=tf.uint8)
-    image = tf.map_fn(lambda x: array_ops.reshape(x, [32, 32, 3]), image)
+    image = tf.cast(image_ops.decode_image(features['image/encoded'], channels=3), tf.uint8)
+    image = array_ops.reshape(image, [32, 32, 3])
     label = tf.cast(features['image/class/label'], tf.int32)
 
     return image, label
 
-def inputs(batch_size):
+def inputs():
     with tf.name_scope('input'):
+        batch_size = tf.placeholder(tf.int64, name='batch_size')
+
         train_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TRAIN_FILE)
-        train_dataset = train_dataset.repeat(None)
-        train_dataset = train_dataset.shuffle(50000)
-        train_dataset = train_dataset.batch(batch_size)
+        train_dataset = train_dataset.repeat()
         train_dataset = train_dataset.map(decode)
         train_dataset = train_dataset.map(normalize_train) # commented while calculating mean
-        train_dataset = train_dataset.map(augment)
-        train_dataset = train_dataset.prefetch(batch_size*3)
+        train_dataset = train_dataset.map(flip)
+        #train_dataset = train_dataset.map(change_light)
+        train_dataset = train_dataset.map(random_crop)
+        train_dataset = train_dataset.shuffle(batch_size*10)
+        train_dataset = train_dataset.batch(batch_size)
+        train_dataset = train_dataset.prefetch(batch_size*10)
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
-        test_dataset = test_dataset.batch(batch_size)
         test_dataset = test_dataset.map(decode)
         test_dataset = test_dataset.map(normalize_test) # commented while calculating mean
-        test_dataset = test_dataset.prefetch(batch_size*3)
+        test_dataset = test_dataset.batch(batch_size)
+        test_dataset = test_dataset.prefetch(batch_size*5)
 
         iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)
         train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')

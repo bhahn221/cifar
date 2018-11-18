@@ -15,16 +15,17 @@ MODEL='resnet18'
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=50000
 CIFAR_TEST_SIZE=10000
-BATCH_SIZE=128
-LEARNING_RATE=1e-3
-N_EPOCH=80
+TRAIN_BATCH_SIZE=128
+TEST_BATCH_SIZE=100
+LEARNING_RATE=1e-1
+N_EPOCH=40
 
 def main(args):
     # define session
     sess = tf.Session()
     
     # get input data
-    x, y = cifar_dataset.inputs(BATCH_SIZE)
+    x, y = cifar_dataset.inputs()
 
     # TODO define model
     logits = resnet.resnet18(x)
@@ -61,6 +62,7 @@ def main(args):
     #dropout1 = graph.get_tensor_by_name('model/dropout1:0')
     #dropout2 = graph.get_tensor_by_name('model/dropout2:0')
     global_step = graph.get_tensor_by_name('train/global_step:0')
+    batch_size = graph.get_tensor_by_name('input/batch_size:0')
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
     learning_rate = graph.get_tensor_by_name('train/learning_rate:0')
@@ -69,9 +71,9 @@ def main(args):
     initial_step = sess.run(global_step)
 
     start_time = time.time()
-    n_batch = int(CIFAR_TRAIN_SIZE / BATCH_SIZE)
+    n_batch = int(CIFAR_TRAIN_SIZE / TRAIN_BATCH_SIZE)
     
-    sess.run(train_dataset_init) 
+    sess.run(train_dataset_init, feed_dict={batch_size: TRAIN_BATCH_SIZE}) 
 
     # run train
     total_loss = 0.0
@@ -91,14 +93,36 @@ def main(args):
             total_loss = 0.0
             saver.save(sess, 'checkpoints/'+MODEL+'/'+MODEL, index)
 
+        if (index + 1) % (n_batch * 10) == 0:
+            print('Check Test Accuracy')
+
+            # prepair for testing
+            _start_time = time.time()
+            _n_batch = int(CIFAR_TEST_SIZE / TEST_BATCH_SIZE)
+            
+            sess.run(test_dataset_init, feed_dict={batch_size: TEST_BATCH_SIZE}) 
+            
+            # run test
+            total_correct = 0
+            for index in range(_n_batch):
+                batch_summary, batch_correct = sess.run([summary_op, test_op])
+                
+                total_correct += batch_correct
+
+            print('Accuracy: {0}'.format(float(total_correct)/CIFAR_TEST_SIZE))
+            print('Total time: {0} seconds'.format(time.time() - _start_time))
+
+            # revert changes made to parameters
+            sess.run(train_dataset_init, feed_dict={batch_size: TRAIN_BATCH_SIZE}) 
+
     print('Optimization Finished!')
     print('Total time: {0} seconds'.format(time.time() - start_time))
 
     # prepair for testing
     start_time = time.time()
-    n_batch = int(CIFAR_TEST_SIZE / BATCH_SIZE)
+    n_batch = int(CIFAR_TEST_SIZE / TEST_BATCH_SIZE)
 
-    sess.run(test_dataset_init) 
+    sess.run(test_dataset_init, feed_dict={batch_size: TEST_BATCH_SIZE}) 
     
     # run test
     total_correct = 0

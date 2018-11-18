@@ -14,7 +14,8 @@ MODEL='resnet18'
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
-BATCH_SIZE=128
+TEST_BATCH_SIZE=100
+TEST_BATCH_SIZE=100
 LEARNING_RATE=1e-4
 N_EPOCH=1
 
@@ -35,15 +36,16 @@ def main(args):
     #dropout1 = graph.get_tensor_by_name('model/dropout1:0')
     #dropout2 = graph.get_tensor_by_name('model/dropout2:0')
     global_step = graph.get_tensor_by_name('train/global_step:0')
+    batch_size = graph.get_tensor_by_name('input/batch_size:0')
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
     test_op = graph.get_tensor_by_name('test/Sum:0')
     
     # prepair for testing
     start_time = time.time()
-    n_batch = int(CIFAR_TEST_SIZE / BATCH_SIZE)
+    n_batch = int(CIFAR_TEST_SIZE / TEST_BATCH_SIZE)
 
-    sess.run(test_dataset_init) 
+    sess.run(test_dataset_init, feed_dict={batch_size: TEST_BATCH_SIZE}) 
     
     # run test
     total_correct = 0
