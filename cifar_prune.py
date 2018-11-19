@@ -10,19 +10,20 @@ import utils
 slim = tf.contrib.slim
 
 import model
-MODEL='model'
+MODEL='resnet18'
 
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=50000
 CIFAR_TEST_SIZE=10000
-BATCH_SIZE=100
+BATCH_SIZE=250
 LEARNING_RATE=1e-3
 N_EPOCH=1
 PRUNING_ITERATION=40
-PRUNING_RATE=70
+PRUNING_RATE=80
 
 def get_kernels(graph=tf.get_default_graph()):
     vals = [val for op in graph.get_operations() for val in op.values()]
+    #return filter(lambda val: '(kernel):0' in val.name, vals)
     return filter(lambda val: 'kernel:0' in val.name, vals)
 
 def prune(weight, pruning_rate):
@@ -41,6 +42,7 @@ def main(args):
     sess = tf.Session()
     
     filename = '.'.join([tf.train.latest_checkpoint('checkpoints/'+MODEL), "meta"])
+    #filename = '.'.join([tf.train.latest_checkpoint('checkpoints/'+MODEL+'_pruned/checkpoint'), "meta"])
     saver = tf.train.import_meta_graph(filename)
 
     # save summary
@@ -57,9 +59,10 @@ def main(args):
 
     # get dropout & global_step
     graph = tf.get_default_graph()
-    dropout1 = graph.get_tensor_by_name('model/dropout1:0')
-    dropout2 = graph.get_tensor_by_name('model/dropout2:0')
+    #dropout1 = graph.get_tensor_by_name('model/dropout1:0')
+    #dropout2 = graph.get_tensor_by_name('model/dropout2:0')
     global_step = graph.get_tensor_by_name('train/global_step:0')
+    #global_step = graph.get_tensor_by_name('train/global_step/(global_step):0')
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
     test_op = graph.get_tensor_by_name('test/Sum:0')
@@ -103,12 +106,10 @@ def main(args):
         for index in range(initial_step, initial_step + n_batch * N_EPOCH):
             if index % n_batch == 0:
                 # assume it has been trained 120 epochs before pruning
-                print('Epoch: {}'.format((index - 60000) / n_batch))
+                print('Epoch: {}'.format((index - initial_step) / n_batch))
 
             _, batch_summary, batch_loss = sess.run([train_op, summary_op, loss], 
-                                                    feed_dict={dropout1: 1.0,
-                                                               dropout2: 1.0,
-                                                               learning_rate: LEARNING_RATE})
+                                                    feed_dict={learning_rate: LEARNING_RATE})
             
             # write summary
             writer.add_summary(batch_summary, global_step=index)
@@ -151,9 +152,7 @@ def main(args):
         # run test
         total_correct = 0
         for index in range(n_batch):
-            batch_summary, batch_correct = sess.run([summary_op, test_op],
-                                                 feed_dict={dropout1: 1.0,
-                                                            dropout2: 1.0})
+            batch_summary, batch_correct = sess.run([summary_op, test_op])
             
             total_correct += batch_correct
 

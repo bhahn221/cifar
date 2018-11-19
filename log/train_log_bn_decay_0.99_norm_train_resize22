@@ -1,0 +1,863 @@
+Epoch: 0
+Average loss at step 100: 2.48514
+Average loss at step 200: 1.91306
+Average loss at step 300: 1.70114
+Epoch: 1
+Average loss at step 400: 1.58183
+Average loss at step 500: 1.50866
+Average loss at step 600: 1.42402
+Average loss at step 700: 1.37194
+Epoch: 2
+Average loss at step 800: 1.28427
+Average loss at step 900: 1.21142
+Average loss at step 1000: 1.14596
+Average loss at step 1100: 1.08897
+Epoch: 3
+Average loss at step 1200: 1.00942
+Average loss at step 1300: 0.98918
+Average loss at step 1400: 0.94991
+Average loss at step 1500: 0.91718
+Epoch: 4
+Average loss at step 1600: 0.84860
+Average loss at step 1700: 0.85003
+Average loss at step 1800: 0.81362
+Average loss at step 1900: 0.81378
+Epoch: 5
+Average loss at step 2000: 0.76775
+Average loss at step 2100: 0.77711
+Average loss at step 2200: 0.74413
+Average loss at step 2300: 0.73200
+Epoch: 6
+Average loss at step 2400: 0.71686
+Average loss at step 2500: 0.71353
+Average loss at step 2600: 0.68999
+Average loss at step 2700: 0.69273
+Epoch: 7
+Average loss at step 2800: 0.64886
+Average loss at step 2900: 0.67338
+Average loss at step 3000: 0.66269
+Average loss at step 3100: 0.64096
+Epoch: 8
+Average loss at step 3200: 0.62345
+Average loss at step 3300: 0.65303
+Average loss at step 3400: 0.63494
+Average loss at step 3500: 0.61084
+Epoch: 9
+Average loss at step 3600: 0.59561
+Average loss at step 3700: 0.61870
+Average loss at step 3800: 0.59528
+Average loss at step 3900: 0.58430
+Check Test Accuracy
+Accuracy: 0.8008
+Total time: 1.4864089489 seconds
+Epoch: 10
+Average loss at step 4000: 0.57649
+Average loss at step 4100: 0.58502
+Average loss at step 4200: 0.58092
+Epoch: 11
+Average loss at step 4300: 0.55699
+Average loss at step 4400: 0.55015
+Average loss at step 4500: 0.57611
+Average loss at step 4600: 0.56433
+Epoch: 12
+Average loss at step 4700: 0.54223
+Average loss at step 4800: 0.55090
+Average loss at step 4900: 0.55591
+Average loss at step 5000: 0.54077
+Epoch: 13
+Average loss at step 5100: 0.52075
+Average loss at step 5200: 0.53119
+Average loss at step 5300: 0.51903
+Average loss at step 5400: 0.52893
+Epoch: 14
+Average loss at step 5500: 0.50763
+Average loss at step 5600: 0.53138
+Average loss at step 5700: 0.51022
+Average loss at step 5800: 0.51853
+Epoch: 15
+Average loss at step 5900: 0.50539
+Average loss at step 6000: 0.50782
+Average loss at step 6100: 0.51280
+Average loss at step 6200: 0.49816
+Epoch: 16
+Average loss at step 6300: 0.48916
+Average loss at step 6400: 0.50203
+Average loss at step 6500: 0.50551
+Average loss at step 6600: 0.49853
+Epoch: 17
+Average loss at step 6700: 0.48515
+Average loss at step 6800: 0.50079
+Average loss at step 6900: 0.47133
+Average loss at step 7000: 0.48709
+Epoch: 18
+Average loss at step 7100: 0.47427
+Average loss at step 7200: 0.48960
+Average loss at step 7300: 0.47760
+Average loss at step 7400: 0.47513
+Epoch: 19
+Average loss at step 7500: 0.46229
+Average loss at step 7600: 0.48458
+Average loss at step 7700: 0.47219
+Average loss at step 7800: 0.46895
+Check Test Accuracy
+Accuracy: 0.8131
+Total time: 1.21127080917 seconds
+Epoch: 20
+Average loss at step 7900: 0.46102
+Average loss at step 8000: 0.47548
+Average loss at step 8100: 0.45634
+Epoch: 21
+Average loss at step 8200: 0.46242
+Average loss at step 8300: 0.44906
+Average loss at step 8400: 0.46446
+Average loss at step 8500: 0.45605
+Epoch: 22
+Average loss at step 8600: 0.45549
+Average loss at step 8700: 0.44496
+Average loss at step 8800: 0.45044
+Average loss at step 8900: 0.45692
+Epoch: 23
+Average loss at step 9000: 0.45574
+Average loss at step 9100: 0.45325
+Average loss at step 9200: 0.45269
+Average loss at step 9300: 0.45264
+Epoch: 24
+Average loss at step 9400: 0.44254
+Average loss at step 9500: 0.43290
+Average loss at step 9600: 0.45646
+Average loss at step 9700: 0.44689
+Epoch: 25
+Average loss at step 9800: 0.44295
+Average loss at step 9900: 0.44612
+Average loss at step 10000: 0.44266
+Average loss at step 10100: 0.43766
+Epoch: 26
+Average loss at step 10200: 0.43346
+Average loss at step 10300: 0.43374
+Average loss at step 10400: 0.44548
+Average loss at step 10500: 0.43823
+Epoch: 27
+Average loss at step 10600: 0.42569
+Average loss at step 10700: 0.43282
+Average loss at step 10800: 0.43832
+Average loss at step 10900: 0.43772
+Epoch: 28
+Average loss at step 11000: 0.42309
+Average loss at step 11100: 0.43445
+Average loss at step 11200: 0.42872
+Average loss at step 11300: 0.43082
+Epoch: 29
+Average loss at step 11400: 0.42729
+Average loss at step 11500: 0.42051
+Average loss at step 11600: 0.43404
+Average loss at step 11700: 0.42577
+Check Test Accuracy
+Accuracy: 0.826
+Total time: 1.24533390999 seconds
+Epoch: 30
+Average loss at step 11800: 0.41625
+Average loss at step 11900: 0.42973
+Average loss at step 12000: 0.42472
+Epoch: 31
+Average loss at step 12100: 0.42812
+Average loss at step 12200: 0.41255
+Average loss at step 12300: 0.42809
+Average loss at step 12400: 0.42129
+Epoch: 32
+Average loss at step 12500: 0.41529
+Average loss at step 12600: 0.42080
+Average loss at step 12700: 0.41552
+Average loss at step 12800: 0.41901
+Epoch: 33
+Average loss at step 12900: 0.41040
+Average loss at step 13000: 0.42123
+Average loss at step 13100: 0.42384
+Average loss at step 13200: 0.42058
+Epoch: 34
+Average loss at step 13300: 0.41219
+Average loss at step 13400: 0.41862
+Average loss at step 13500: 0.41180
+Average loss at step 13600: 0.41016
+Epoch: 35
+Average loss at step 13700: 0.39983
+Average loss at step 13800: 0.41634
+Average loss at step 13900: 0.41982
+Average loss at step 14000: 0.41072
+Epoch: 36
+Average loss at step 14100: 0.40950
+Average loss at step 14200: 0.40738
+Average loss at step 14300: 0.40722
+Average loss at step 14400: 0.41643
+Epoch: 37
+Average loss at step 14500: 0.39907
+Average loss at step 14600: 0.39412
+Average loss at step 14700: 0.40896
+Average loss at step 14800: 0.42664
+Epoch: 38
+Average loss at step 14900: 0.40520
+Average loss at step 15000: 0.40623
+Average loss at step 15100: 0.40638
+Average loss at step 15200: 0.40601
+Epoch: 39
+Average loss at step 15300: 0.40630
+Average loss at step 15400: 0.41991
+Average loss at step 15500: 0.40660
+Average loss at step 15600: 0.40562
+Check Test Accuracy
+Accuracy: 0.8423
+Total time: 1.21492409706 seconds
+Epoch: 40
+Average loss at step 15700: 0.39711
+Average loss at step 15800: 0.41463
+Average loss at step 15900: 0.42693
+Epoch: 41
+Average loss at step 16000: 0.41101
+Average loss at step 16100: 0.40958
+Average loss at step 16200: 0.40720
+Average loss at step 16300: 0.41359
+Epoch: 42
+Average loss at step 16400: 0.40125
+Average loss at step 16500: 0.40498
+Average loss at step 16600: 0.40618
+Average loss at step 16700: 0.40625
+Epoch: 43
+Average loss at step 16800: 0.41010
+Average loss at step 16900: 0.41075
+Average loss at step 17000: 0.40629
+Average loss at step 17100: 0.41724
+Epoch: 44
+Average loss at step 17200: 0.39123
+Average loss at step 17300: 0.40150
+Average loss at step 17400: 0.41300
+Average loss at step 17500: 0.41811
+Epoch: 45
+Average loss at step 17600: 0.39861
+Average loss at step 17700: 0.40596
+Average loss at step 17800: 0.39260
+Average loss at step 17900: 0.40540
+Epoch: 46
+Average loss at step 18000: 0.39489
+Average loss at step 18100: 0.40568
+Average loss at step 18200: 0.39863
+Average loss at step 18300: 0.41283
+Epoch: 47
+Average loss at step 18400: 0.40930
+Average loss at step 18500: 0.40673
+Average loss at step 18600: 0.39799
+Average loss at step 18700: 0.39894
+Epoch: 48
+Average loss at step 18800: 0.38097
+Average loss at step 18900: 0.39233
+Average loss at step 19000: 0.39813
+Average loss at step 19100: 0.40007
+Epoch: 49
+Average loss at step 19200: 0.39286
+Average loss at step 19300: 0.41561
+Average loss at step 19400: 0.41036
+Average loss at step 19500: 0.39784
+Check Test Accuracy
+Accuracy: 0.8405
+Total time: 1.22057294846 seconds
+Epoch: 50
+Average loss at step 19600: 0.39852
+Average loss at step 19700: 0.42140
+Average loss at step 19800: 0.40449
+Epoch: 51
+Average loss at step 19900: 0.40099
+Average loss at step 20000: 0.38348
+Average loss at step 20100: 0.39410
+Average loss at step 20200: 0.39171
+Epoch: 52
+Average loss at step 20300: 0.38870
+Average loss at step 20400: 0.38937
+Average loss at step 20500: 0.39980
+Average loss at step 20600: 0.40264
+Epoch: 53
+Average loss at step 20700: 0.38158
+Average loss at step 20800: 0.40570
+Average loss at step 20900: 0.39011
+Average loss at step 21000: 0.40190
+Epoch: 54
+Average loss at step 21100: 0.39086
+Average loss at step 21200: 0.39746
+Average loss at step 21300: 0.39171
+Average loss at step 21400: 0.40024
+Epoch: 55
+Average loss at step 21500: 0.40174
+Average loss at step 21600: 0.40005
+Average loss at step 21700: 0.39537
+Average loss at step 21800: 0.40109
+Epoch: 56
+Average loss at step 21900: 0.39035
+Average loss at step 22000: 0.39280
+Average loss at step 22100: 0.39517
+Average loss at step 22200: 0.39227
+Epoch: 57
+Average loss at step 22300: 0.40176
+Average loss at step 22400: 0.39207
+Average loss at step 22500: 0.39129
+Average loss at step 22600: 0.38166
+Epoch: 58
+Average loss at step 22700: 0.38040
+Average loss at step 22800: 0.40992
+Average loss at step 22900: 0.40345
+Average loss at step 23000: 0.39138
+Epoch: 59
+Average loss at step 23100: 0.38872
+Average loss at step 23200: 0.39847
+Average loss at step 23300: 0.39786
+Average loss at step 23400: 0.38782
+Check Test Accuracy
+Accuracy: 0.8373
+Total time: 1.22966718674 seconds
+Epoch: 60
+Average loss at step 23500: 0.37524
+Average loss at step 23600: 0.38682
+Average loss at step 23700: 0.39589
+Epoch: 61
+Average loss at step 23800: 0.38775
+Average loss at step 23900: 0.39917
+Average loss at step 24000: 0.39552
+Average loss at step 24100: 0.39237
+Epoch: 62
+Average loss at step 24200: 0.38702
+Average loss at step 24300: 0.39167
+Average loss at step 24400: 0.38577
+Average loss at step 24500: 0.39386
+Epoch: 63
+Average loss at step 24600: 0.38520
+Average loss at step 24700: 0.39461
+Average loss at step 24800: 0.38001
+Average loss at step 24900: 0.38547
+Epoch: 64
+Average loss at step 25000: 0.38153
+Average loss at step 25100: 0.38243
+Average loss at step 25200: 0.37930
+Average loss at step 25300: 0.39118
+Epoch: 65
+Average loss at step 25400: 0.37839
+Average loss at step 25500: 0.39188
+Average loss at step 25600: 0.38894
+Average loss at step 25700: 0.38867
+Epoch: 66
+Average loss at step 25800: 0.38692
+Average loss at step 25900: 0.39254
+Average loss at step 26000: 0.38217
+Average loss at step 26100: 0.39780
+Epoch: 67
+Average loss at step 26200: 0.39159
+Average loss at step 26300: 0.39090
+Average loss at step 26400: 0.38405
+Average loss at step 26500: 0.38518
+Epoch: 68
+Average loss at step 26600: 0.36393
+Average loss at step 26700: 0.38270
+Average loss at step 26800: 0.39221
+Average loss at step 26900: 0.38492
+Epoch: 69
+Average loss at step 27000: 0.36861
+Average loss at step 27100: 0.38694
+Average loss at step 27200: 0.38474
+Average loss at step 27300: 0.38202
+Check Test Accuracy
+Accuracy: 0.8326
+Total time: 1.21652412415 seconds
+Epoch: 70
+Average loss at step 27400: 0.37692
+Average loss at step 27500: 0.38133
+Average loss at step 27600: 0.40212
+Epoch: 71
+Average loss at step 27700: 0.38944
+Average loss at step 27800: 0.37933
+Average loss at step 27900: 0.38961
+Average loss at step 28000: 0.38330
+Epoch: 72
+Average loss at step 28100: 0.37300
+Average loss at step 28200: 0.36639
+Average loss at step 28300: 0.37702
+Average loss at step 28400: 0.39895
+Epoch: 73
+Average loss at step 28500: 0.38596
+Average loss at step 28600: 0.37677
+Average loss at step 28700: 0.37219
+Average loss at step 28800: 0.36911
+Epoch: 74
+Average loss at step 28900: 0.39399
+Average loss at step 29000: 0.38296
+Average loss at step 29100: 0.38044
+Average loss at step 29200: 0.38438
+Epoch: 75
+Average loss at step 29300: 0.39265
+Average loss at step 29400: 0.38194
+Average loss at step 29500: 0.38247
+Average loss at step 29600: 0.39631
+Epoch: 76
+Average loss at step 29700: 0.37569
+Average loss at step 29800: 0.36810
+Average loss at step 29900: 0.37880
+Average loss at step 30000: 0.38502
+Epoch: 77
+Average loss at step 30100: 0.37838
+Average loss at step 30200: 0.39095
+Average loss at step 30300: 0.38291
+Average loss at step 30400: 0.38460
+Epoch: 78
+Average loss at step 30500: 0.37409
+Average loss at step 30600: 0.37679
+Average loss at step 30700: 0.37726
+Average loss at step 30800: 0.37138
+Epoch: 79
+Average loss at step 30900: 0.37442
+Average loss at step 31000: 0.39909
+Average loss at step 31100: 0.38455
+Average loss at step 31200: 0.38394
+Check Test Accuracy
+Accuracy: 0.8341
+Total time: 1.22635412216 seconds
+Epoch: 80
+Average loss at step 31300: 0.37953
+Average loss at step 31400: 0.37827
+Average loss at step 31500: 0.39265
+Epoch: 81
+Average loss at step 31600: 0.38362
+Average loss at step 31700: 0.36809
+Average loss at step 31800: 0.37153
+Average loss at step 31900: 0.38061
+Optimization Finished!
+Total time: 1060.52593589 seconds
+Accuracy: 0.8394
+Total time: 1.23006892204 seconds
+Epoch: 82
+Average loss at step 32000: 0.34135
+Average loss at step 32100: 0.30667
+Average loss at step 32200: 0.28416
+Average loss at step 32300: 0.30045
+Epoch: 83
+Average loss at step 32400: 0.28575
+Average loss at step 32500: 0.27392
+Average loss at step 32600: 0.26811
+Average loss at step 32700: 0.27950
+Epoch: 84
+Average loss at step 32800: 0.27074
+Average loss at step 32900: 0.26506
+Average loss at step 33000: 0.26357
+Average loss at step 33100: 0.26748
+Epoch: 85
+Average loss at step 33200: 0.26039
+Average loss at step 33300: 0.25523
+Average loss at step 33400: 0.25535
+Average loss at step 33500: 0.25806
+Epoch: 86
+Average loss at step 33600: 0.25220
+Average loss at step 33700: 0.24774
+Average loss at step 33800: 0.25055
+Average loss at step 33900: 0.25232
+Epoch: 87
+Average loss at step 34000: 0.24673
+Average loss at step 34100: 0.24484
+Average loss at step 34200: 0.24518
+Average loss at step 34300: 0.24587
+Epoch: 88
+Average loss at step 34400: 0.24349
+Average loss at step 34500: 0.24097
+Average loss at step 34600: 0.24124
+Average loss at step 34700: 0.24060
+Epoch: 89
+Average loss at step 34800: 0.23791
+Average loss at step 34900: 0.23696
+Average loss at step 35000: 0.23711
+Average loss at step 35100: 0.23779
+Check Test Accuracy
+Accuracy: 0.8723
+Total time: 1.47636914253 seconds
+Epoch: 90
+Average loss at step 35200: 0.23436
+Average loss at step 35300: 0.23388
+Average loss at step 35400: 0.23301
+Epoch: 91
+Average loss at step 35500: 0.23456
+Average loss at step 35600: 0.23218
+Average loss at step 35700: 0.23104
+Average loss at step 35800: 0.23006
+Epoch: 92
+Average loss at step 35900: 0.23312
+Average loss at step 36000: 0.22850
+Average loss at step 36100: 0.22845
+Average loss at step 36200: 0.22827
+Epoch: 93
+Average loss at step 36300: 0.22737
+Average loss at step 36400: 0.22638
+Average loss at step 36500: 0.22519
+Average loss at step 36600: 0.22647
+Epoch: 94
+Average loss at step 36700: 0.22581
+Average loss at step 36800: 0.22474
+Average loss at step 36900: 0.22331
+Average loss at step 37000: 0.22206
+Epoch: 95
+Average loss at step 37100: 0.22215
+Average loss at step 37200: 0.22181
+Average loss at step 37300: 0.22108
+Average loss at step 37400: 0.22098
+Epoch: 96
+Average loss at step 37500: 0.22137
+Average loss at step 37600: 0.21961
+Average loss at step 37700: 0.21838
+Average loss at step 37800: 0.21898
+Epoch: 97
+Average loss at step 37900: 0.21808
+Average loss at step 38000: 0.21708
+Average loss at step 38100: 0.21687
+Average loss at step 38200: 0.21689
+Epoch: 98
+Average loss at step 38300: 0.21577
+Average loss at step 38400: 0.21592
+Average loss at step 38500: 0.21437
+Average loss at step 38600: 0.21447
+Epoch: 99
+Average loss at step 38700: 0.21458
+Average loss at step 38800: 0.21286
+Average loss at step 38900: 0.21270
+Average loss at step 39000: 0.21285
+Check Test Accuracy
+Accuracy: 0.8748
+Total time: 1.21825289726 seconds
+Epoch: 100
+Average loss at step 39100: 0.21231
+Average loss at step 39200: 0.21086
+Average loss at step 39300: 0.21052
+Epoch: 101
+Average loss at step 39400: 0.21103
+Average loss at step 39500: 0.20984
+Average loss at step 39600: 0.20981
+Average loss at step 39700: 0.20920
+Epoch: 102
+Average loss at step 39800: 0.20901
+Average loss at step 39900: 0.20822
+Average loss at step 40000: 0.20719
+Average loss at step 40100: 0.20676
+Epoch: 103
+Average loss at step 40200: 0.20718
+Average loss at step 40300: 0.20635
+Average loss at step 40400: 0.20579
+Average loss at step 40500: 0.20522
+Epoch: 104
+Average loss at step 40600: 0.20567
+Average loss at step 40700: 0.20471
+Average loss at step 40800: 0.20368
+Average loss at step 40900: 0.20344
+Epoch: 105
+Average loss at step 41000: 0.20375
+Average loss at step 41100: 0.20336
+Average loss at step 41200: 0.20220
+Average loss at step 41300: 0.20231
+Epoch: 106
+Average loss at step 41400: 0.20185
+Average loss at step 41500: 0.20119
+Average loss at step 41600: 0.20057
+Average loss at step 41700: 0.20017
+Epoch: 107
+Average loss at step 41800: 0.20012
+Average loss at step 41900: 0.19937
+Average loss at step 42000: 0.19914
+Average loss at step 42100: 0.19843
+Epoch: 108
+Average loss at step 42200: 0.19826
+Average loss at step 42300: 0.19793
+Average loss at step 42400: 0.19731
+Average loss at step 42500: 0.19690
+Epoch: 109
+Average loss at step 42600: 0.19652
+Average loss at step 42700: 0.19634
+Average loss at step 42800: 0.19570
+Average loss at step 42900: 0.19583
+Check Test Accuracy
+Accuracy: 0.8738
+Total time: 1.21226406097 seconds
+Epoch: 110
+Average loss at step 43000: 0.19511
+Average loss at step 43100: 0.19443
+Average loss at step 43200: 0.19412
+Epoch: 111
+Average loss at step 43300: 0.19382
+Average loss at step 43400: 0.19324
+Average loss at step 43500: 0.19258
+Average loss at step 43600: 0.19219
+Epoch: 112
+Average loss at step 43700: 0.19256
+Average loss at step 43800: 0.19181
+Average loss at step 43900: 0.19126
+Average loss at step 44000: 0.19086
+Epoch: 113
+Average loss at step 44100: 0.19087
+Average loss at step 44200: 0.19040
+Average loss at step 44300: 0.18965
+Average loss at step 44400: 0.18936
+Epoch: 114
+Average loss at step 44500: 0.18935
+Average loss at step 44600: 0.18871
+Average loss at step 44700: 0.18803
+Average loss at step 44800: 0.18796
+Epoch: 115
+Average loss at step 44900: 0.18791
+Average loss at step 45000: 0.18693
+Average loss at step 45100: 0.18638
+Average loss at step 45200: 0.18624
+Epoch: 116
+Average loss at step 45300: 0.18608
+Average loss at step 45400: 0.18544
+Average loss at step 45500: 0.18501
+Average loss at step 45600: 0.18504
+Epoch: 117
+Average loss at step 45700: 0.18467
+Average loss at step 45800: 0.18416
+Average loss at step 45900: 0.18393
+Average loss at step 46000: 0.18337
+Epoch: 118
+Average loss at step 46100: 0.18364
+Average loss at step 46200: 0.18280
+Average loss at step 46300: 0.18236
+Average loss at step 46400: 0.18194
+Epoch: 119
+Average loss at step 46500: 0.18161
+Average loss at step 46600: 0.18115
+Average loss at step 46700: 0.18071
+Average loss at step 46800: 0.18049
+Check Test Accuracy
+Accuracy: 0.875
+Total time: 1.21985602379 seconds
+Epoch: 120
+Average loss at step 46900: 0.18038
+Average loss at step 47000: 0.17980
+Average loss at step 47100: 0.17938
+Epoch: 121
+Average loss at step 47200: 0.17951
+Average loss at step 47300: 0.17874
+Average loss at step 47400: 0.17812
+Average loss at step 47500: 0.17766
+Epoch: 122
+Average loss at step 47600: 0.17773
+Average loss at step 47700: 0.17717
+Average loss at step 47800: 0.17675
+Average loss at step 47900: 0.17672
+Optimization Finished!
+Total time: 534.407842875 seconds
+Accuracy: 0.8746
+Total time: 1.21711683273 seconds
+Epoch: 123
+Average loss at step 48000: 0.17644
+Average loss at step 48100: 0.17635
+Average loss at step 48200: 0.17625
+Average loss at step 48300: 0.17621
+Epoch: 124
+Average loss at step 48400: 0.17641
+Average loss at step 48500: 0.17618
+Average loss at step 48600: 0.17603
+Average loss at step 48700: 0.17611
+Epoch: 125
+Average loss at step 48800: 0.17610
+Average loss at step 48900: 0.17567
+Average loss at step 49000: 0.17566
+Average loss at step 49100: 0.17608
+Epoch: 126
+Average loss at step 49200: 0.17618
+Average loss at step 49300: 0.17584
+Average loss at step 49400: 0.17576
+Average loss at step 49500: 0.17615
+Epoch: 127
+Average loss at step 49600: 0.17582
+Average loss at step 49700: 0.17551
+Average loss at step 49800: 0.17556
+Average loss at step 49900: 0.17564
+Epoch: 128
+Average loss at step 50000: 0.17545
+Average loss at step 50100: 0.17546
+Average loss at step 50200: 0.17553
+Average loss at step 50300: 0.17563
+Epoch: 129
+Average loss at step 50400: 0.17556
+Average loss at step 50500: 0.17527
+Average loss at step 50600: 0.17542
+Average loss at step 50700: 0.17534
+Check Test Accuracy
+Accuracy: 0.8752
+Total time: 1.46870684624 seconds
+Epoch: 130
+Average loss at step 50800: 0.17543
+Average loss at step 50900: 0.17548
+Average loss at step 51000: 0.17520
+Epoch: 131
+Average loss at step 51100: 0.17526
+Average loss at step 51200: 0.17536
+Average loss at step 51300: 0.17521
+Average loss at step 51400: 0.17482
+Epoch: 132
+Average loss at step 51500: 0.17532
+Average loss at step 51600: 0.17522
+Average loss at step 51700: 0.17473
+Average loss at step 51800: 0.17479
+Epoch: 133
+Average loss at step 51900: 0.17515
+Average loss at step 52000: 0.17492
+Average loss at step 52100: 0.17469
+Average loss at step 52200: 0.17494
+Epoch: 134
+Average loss at step 52300: 0.17474
+Average loss at step 52400: 0.17480
+Average loss at step 52500: 0.17457
+Average loss at step 52600: 0.17472
+Epoch: 135
+Average loss at step 52700: 0.17465
+Average loss at step 52800: 0.17466
+Average loss at step 52900: 0.17438
+Average loss at step 53000: 0.17454
+Epoch: 136
+Average loss at step 53100: 0.17461
+Average loss at step 53200: 0.17456
+Average loss at step 53300: 0.17411
+Average loss at step 53400: 0.17439
+Epoch: 137
+Average loss at step 53500: 0.17457
+Average loss at step 53600: 0.17441
+Average loss at step 53700: 0.17429
+Average loss at step 53800: 0.17412
+Epoch: 138
+Average loss at step 53900: 0.17458
+Average loss at step 54000: 0.17447
+Average loss at step 54100: 0.17401
+Average loss at step 54200: 0.17412
+Epoch: 139
+Average loss at step 54300: 0.17415
+Average loss at step 54400: 0.17411
+Average loss at step 54500: 0.17386
+Average loss at step 54600: 0.17400
+Check Test Accuracy
+Accuracy: 0.8738
+Total time: 1.2189002037 seconds
+Epoch: 140
+Average loss at step 54700: 0.17416
+Average loss at step 54800: 0.17389
+Average loss at step 54900: 0.17375
+Epoch: 141
+Average loss at step 55000: 0.17424
+Average loss at step 55100: 0.17393
+Average loss at step 55200: 0.17376
+Average loss at step 55300: 0.17369
+Epoch: 142
+Average loss at step 55400: 0.17390
+Average loss at step 55500: 0.17372
+Average loss at step 55600: 0.17333
+Average loss at step 55700: 0.17355
+Epoch: 143
+Average loss at step 55800: 0.17371
+Average loss at step 55900: 0.17373
+Average loss at step 56000: 0.17331
+Average loss at step 56100: 0.17344
+Epoch: 144
+Average loss at step 56200: 0.17345
+Average loss at step 56300: 0.17335
+Average loss at step 56400: 0.17318
+Average loss at step 56500: 0.17319
+Epoch: 145
+Average loss at step 56600: 0.17347
+Average loss at step 56700: 0.17325
+Average loss at step 56800: 0.17297
+Average loss at step 56900: 0.17306
+Epoch: 146
+Average loss at step 57000: 0.17311
+Average loss at step 57100: 0.17309
+Average loss at step 57200: 0.17312
+Average loss at step 57300: 0.17296
+Epoch: 147
+Average loss at step 57400: 0.17305
+Average loss at step 57500: 0.17316
+Average loss at step 57600: 0.17282
+Average loss at step 57700: 0.17291
+Epoch: 148
+Average loss at step 57800: 0.17297
+Average loss at step 57900: 0.17260
+Average loss at step 58000: 0.17274
+Average loss at step 58100: 0.17269
+Epoch: 149
+Average loss at step 58200: 0.17266
+Average loss at step 58300: 0.17268
+Average loss at step 58400: 0.17250
+Average loss at step 58500: 0.17283
+Check Test Accuracy
+Accuracy: 0.8744
+Total time: 1.23234009743 seconds
+Epoch: 150
+Average loss at step 58600: 0.17261
+Average loss at step 58700: 0.17256
+Average loss at step 58800: 0.17269
+Epoch: 151
+Average loss at step 58900: 0.17272
+Average loss at step 59000: 0.17253
+Average loss at step 59100: 0.17219
+Average loss at step 59200: 0.17232
+Epoch: 152
+Average loss at step 59300: 0.17271
+Average loss at step 59400: 0.17227
+Average loss at step 59500: 0.17211
+Average loss at step 59600: 0.17218
+Epoch: 153
+Average loss at step 59700: 0.17231
+Average loss at step 59800: 0.17224
+Average loss at step 59900: 0.17213
+Average loss at step 60000: 0.17202
+Epoch: 154
+Average loss at step 60100: 0.17207
+Average loss at step 60200: 0.17193
+Average loss at step 60300: 0.17195
+Average loss at step 60400: 0.17199
+Epoch: 155
+Average loss at step 60500: 0.17197
+Average loss at step 60600: 0.17172
+Average loss at step 60700: 0.17163
+Average loss at step 60800: 0.17174
+Epoch: 156
+Average loss at step 60900: 0.17202
+Average loss at step 61000: 0.17172
+Average loss at step 61100: 0.17142
+Average loss at step 61200: 0.17162
+Epoch: 157
+Average loss at step 61300: 0.17231
+Average loss at step 61400: 0.17176
+Average loss at step 61500: 0.17165
+Average loss at step 61600: 0.17156
+Epoch: 158
+Average loss at step 61700: 0.17164
+Average loss at step 61800: 0.17144
+Average loss at step 61900: 0.17159
+Average loss at step 62000: 0.17178
+Epoch: 159
+Average loss at step 62100: 0.17161
+Average loss at step 62200: 0.17098
+Average loss at step 62300: 0.17124
+Average loss at step 62400: 0.17148
+Check Test Accuracy
+Accuracy: 0.8743
+Total time: 1.20259714127 seconds
+Epoch: 160
+Average loss at step 62500: 0.17150
+Average loss at step 62600: 0.17125
+Average loss at step 62700: 0.17095
+Epoch: 161
+Average loss at step 62800: 0.17115
+Average loss at step 62900: 0.17131
+Average loss at step 63000: 0.17084
+Average loss at step 63100: 0.17094
+Epoch: 162
+Average loss at step 63200: 0.17146
+Average loss at step 63300: 0.17117
+Average loss at step 63400: 0.17077
+Average loss at step 63500: 0.17081
+Epoch: 163
+Average loss at step 63600: 0.17098
+Average loss at step 63700: 0.17079
+Average loss at step 63800: 0.17061
+Average loss at step 63900: 0.17059
+Optimization Finished!
+Total time: 533.799088001 seconds
+Accuracy: 0.8738
+Total time: 1.21437716484 seconds

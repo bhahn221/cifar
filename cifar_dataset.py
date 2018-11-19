@@ -45,7 +45,7 @@ def change_light(image, label):
     return image, label
 
 def random_crop(image, label):
-    padded_image = tf.pad(image, [[4,4], [4,4], [0,0]], 'CONSTANT')
+    padded_image = tf.pad(image, [[2,2], [2,2], [0,0]], 'CONSTANT')
     cropped_image = tf.random_crop(padded_image, [32, 32, 3])
 
     return image, label

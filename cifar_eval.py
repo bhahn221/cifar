@@ -9,14 +9,15 @@ import utils
 
 slim = tf.contrib.slim
 
-MODEL='resnet18'
+MODEL='resnet20'
 
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
+TRAIN_BATCH_SIZE=128
 TEST_BATCH_SIZE=100
-TEST_BATCH_SIZE=100
-LEARNING_RATE=1e-4
+LEARNING_RATE=1e-3
+WEIGHT_DECAY=1e-4
 N_EPOCH=1
 
 def main(args):
@@ -40,6 +41,9 @@ def main(args):
     train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
     test_op = graph.get_tensor_by_name('test/Sum:0')
+    learning_rate = graph.get_tensor_by_name('train/learning_rate:0')
+    is_training = graph.get_tensor_by_name('resnet20/is_training:0')
+    weight_decay = graph.get_tensor_by_name('loss/weight_decay:0')
     
     # prepair for testing
     start_time = time.time()
@@ -50,7 +54,9 @@ def main(args):
     # run test
     total_correct = 0
     for index in range(n_batch):
-        batch_correct = sess.run(test_op)
+        batch_correct = sess.run(test_op,
+                                 feed_dict={is_training: False,
+                                            weight_decay: 0.0})
         
         total_correct += batch_correct
 
