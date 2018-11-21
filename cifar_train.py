@@ -16,10 +16,10 @@ SKIP_STEP=100
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
 TRAIN_BATCH_SIZE=128
-TEST_BATCH_SIZE=100
-LEARNING_RATE=1e-2
-WEIGHT_DECAY=1e-4
-N_EPOCH=123
+TEST_BATCH_SIZE=500
+LEARNING_RATE=1e-1
+WEIGHT_DECAY=1e-3
+N_EPOCH=82
 LOG='train_log'
 
 def log(file_name, message):

@@ -75,30 +75,37 @@ def _fc(x, out_shape, name='name'):
     in_shape = x.get_shape()
     with tf.variable_scope(name):
         with tf.device('/CPU:0'):
-            w = tf.get_variable('weights', 
+            w = tf.get_variable('weight', 
                                 [in_shape[1], out_shape],
                                 tf.float32,
                                 initializer=tf.random_normal_initializer(
                                     stddev=np.sqrt(1.0/out_shape)))
-            b = tf.get_variable('biases', 
+            b = tf.get_variable('bias', 
                                 [out_shape],
                                 tf.float32,
                                 initializer=tf.constant_initializer(0.0))
         if w not in tf.get_collection('WEIGHT_DECAY'):
             tf.add_to_collection('WEIGHT_DECAY', w)
+        if b not in tf.get_collection('WEIGHT_DECAY'):
+            tf.add_to_collection('WEIGHT_DECAY', b)
         fc = tf.nn.bias_add(tf.matmul(x, w), b)
     return fc
 
 def _resblk_first(x, out_channel, kernel, stride, is_training=True, name='unit'):
     in_channel = x.get_shape().as_list()[-1]
+    projection = False
     with tf.variable_scope(name):
-        if in_channel == out_channel:
-            if stride == 1:
-                shortcut = tf.identity(x)
-            else:
-                shortcut = _max_pool(x, 3, stride, 'SAME', name='shortcut')
+        if stride == 1:
+            shortcut = tf.identity(x, name='shortcut')
         else:
-            shortcut = _conv2d(x, out_channel, 1, stride, 'SAME', name='shortcut')
+            shortcut = _max_pool(x, 3, stride, 'SAME', name='shortcut')
+        if in_channel != out_channel:
+            if projection == True:
+                with tf.variable_scope('shortcut'):
+                    shortcut = _conv2d(shortcut, out_channel, 1, stride, 'SAME', name='conv')
+                    shortcut = _bn(shortcut, is_training, name='bn')
+            else:
+                shortcut = tf.pad(shortcut, [[0,0], [0,0], [0,0], [0, out_channel - in_channel]], name='shortcut')
 
         x = _conv2d(x, out_channel, kernel, stride, 'SAME', name='conv1')
         x = _bn(x, is_training, name='bn1')
@@ -129,6 +136,7 @@ def _resblk(x, out_channel, kernel, is_training=True, name='unit'):
 
     return x
 
+
 def resnet20(x):
     with tf.variable_scope('resnet20'):
         is_training = tf.placeholder(tf.bool, [], 'is_training')
@@ -144,12 +152,12 @@ def resnet20(x):
             x = _resblk(x, 16, 3, is_training=is_training, name='conv2_3')
         
         with tf.variable_scope('conv3'):
-            x = _resblk_first(x, 32, 3, 2, name='conv3_1')
+            x = _resblk_first(x, 32, 3, 2, is_training=is_training, name='conv3_1')
             x = _resblk(x, 32, 3, is_training=is_training, name='conv3_2')
             x = _resblk(x, 32, 3, is_training=is_training, name='conv3_3')
 
         with tf.variable_scope('conv4'):
-            x = _resblk_first(x, 64, 3, 2, name='conv4_1')
+            x = _resblk_first(x, 64, 3, 2, is_training=is_training, name='conv4_1')
             x = _resblk(x, 64, 3, is_training=is_training, name='conv4_2')
             x = _resblk(x, 64, 3, is_training=is_training, name='conv4_3')
 
