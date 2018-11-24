@@ -76,9 +76,9 @@ def inputs():
         train_dataset = train_dataset.map(flip)
         #train_dataset = train_dataset.map(change_light)
         train_dataset = train_dataset.map(random_crop)
-        train_dataset = train_dataset.shuffle(batch_size*10)
+        train_dataset = train_dataset.shuffle(train_dataset_size)
         train_dataset = train_dataset.batch(batch_size)
-        train_dataset = train_dataset.prefetch(batch_size*10)
+        train_dataset = train_dataset.prefetch(batch_size*5)
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
         test_dataset = test_dataset.map(decode)

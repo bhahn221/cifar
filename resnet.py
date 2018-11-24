@@ -3,7 +3,18 @@ import numpy as np
 
 slim = tf.contrib.slim
 
+def _fixed_padding(x, kernel):
+  pad_total = kernel - 1
+  pad_beg = pad_total // 2
+  pad_end = pad_total - pad_beg
+
+  y = tf.pad(x, [[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]])
+  return y
+
 def _conv2d(x, out_channel, kernel, stride, pad='SAME', name=None):
+    if stride > 1:
+        x = _fixed_padding(x, kernel)
+
     in_shape = x.get_shape()
     with tf.variable_scope(name):
         with tf.device('/CPU:0'):
@@ -11,10 +22,13 @@ def _conv2d(x, out_channel, kernel, stride, pad='SAME', name=None):
                                      [kernel, kernel, in_shape[3], out_channel],
                                      tf.float32,
                                      initializer=tf.random_normal_initializer(
-                                         stddev=np.sqrt(2.0/kernel/kernel/out_channel)))
+                                         stddev=np.sqrt(2./kernel/kernel/out_channel)))
         if kernel not in tf.get_collection('WEIGHT_DECAY'):
             tf.add_to_collection('WEIGHT_DECAY', kernel)
-        conv = tf.nn.conv2d(x, kernel, [1, stride, stride, 1], pad)
+        # for ResNet, this seems like the norm
+        # https://github.com/tensorflow/models/blob/master/official/resnet/resnet_model.py
+        conv = tf.nn.conv2d(x, kernel, [1, stride, stride, 1], ('SAME' if stride == 1 else 'VALID'))
+        
     return conv
 
 def _max_pool(x, kernel, stride, pad='SAME', name='name'):
@@ -79,15 +93,17 @@ def _fc(x, out_shape, name='name'):
                                 [in_shape[1], out_shape],
                                 tf.float32,
                                 initializer=tf.random_normal_initializer(
-                                    stddev=np.sqrt(1.0/out_shape)))
+                                    stddev=np.sqrt(2./out_shape)))
             b = tf.get_variable('bias', 
                                 [out_shape],
                                 tf.float32,
                                 initializer=tf.constant_initializer(0.0))
         if w not in tf.get_collection('WEIGHT_DECAY'):
             tf.add_to_collection('WEIGHT_DECAY', w)
-        if b not in tf.get_collection('WEIGHT_DECAY'):
-            tf.add_to_collection('WEIGHT_DECAY', b)
+        # regulariazation is usually not applied to the bias terms
+        # https://stats.stackexchange.com/questions/153605/no-regularisation-term-for-bias-unit-in-neural-network
+        #if b not in tf.get_collection('WEIGHT_DECAY'):
+        #    tf.add_to_collection('WEIGHT_DECAY', b)
         fc = tf.nn.bias_add(tf.matmul(x, w), b)
     return fc
 
@@ -124,10 +140,10 @@ def _resblk(x, out_channel, kernel, is_training=True, name='unit'):
     with tf.variable_scope(name):
         shortcut = tf.identity(x)
 
-        x = _conv2d(x, out_channel, kernel, 1, 'SAME', name='conv1')
+        x = _conv2d(x, out_channel, kernel, 1, name='conv1')
         x = _bn(x, is_training, name='bn1')
         x = _relu(x, 0.0, name='relu1')
-        x = _conv2d(x, out_channel, kernel, 1, 'SAME', name='conv2')
+        x = _conv2d(x, out_channel, kernel, 1, name='conv2')
         x = _bn(x, is_training, name='bn2')
         
         x = x + shortcut
@@ -142,7 +158,7 @@ def resnet20(x):
         is_training = tf.placeholder(tf.bool, [], 'is_training')
 
         with tf.variable_scope('conv1'):
-            x = _conv2d(x, 16, 3, 1, 'SAME', name='conv1')
+            x = _conv2d(x, 16, 3, 1, name='conv1')
             x = _bn(x, is_training, name='bn1')
             x = _relu(x, 0.0, name='relu1')
 

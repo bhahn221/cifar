@@ -17,9 +17,9 @@ CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
 TRAIN_BATCH_SIZE=128
 TEST_BATCH_SIZE=500
-LEARNING_RATE=1e-1
+LEARNING_RATE=1e-3
 WEIGHT_DECAY=1e-3
-N_EPOCH=82
+N_EPOCH=164
 LOG='train_log'
 
 def log(file_name, message):
