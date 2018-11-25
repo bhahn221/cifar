@@ -11,12 +11,12 @@ def _fixed_padding(x, kernel):
   y = tf.pad(x, [[0, 0], [pad_beg, pad_end], [pad_beg, pad_end], [0, 0]])
   return y
 
-def _conv2d(x, out_channel, kernel, stride, pad='SAME', name=None):
-    if stride > 1:
-        x = _fixed_padding(x, kernel)
-
+def _conv2d(x, out_channel, kernel, stride, pad='SAME', bias=False, name=None):
     in_shape = x.get_shape()
     with tf.variable_scope(name):
+        if stride > 1:
+            x = _fixed_padding(x, kernel)
+
         with tf.device('/CPU:0'):
             kernel = tf.get_variable('kernel',
                                      [kernel, kernel, in_shape[3], out_channel],
@@ -28,6 +28,13 @@ def _conv2d(x, out_channel, kernel, stride, pad='SAME', name=None):
         # for ResNet, this seems like the norm
         # https://github.com/tensorflow/models/blob/master/official/resnet/resnet_model.py
         conv = tf.nn.conv2d(x, kernel, [1, stride, stride, 1], ('SAME' if stride == 1 else 'VALID'))
+    
+        if bias == True:
+            b = tf.get_variable('bias', 
+                                [out_channel],
+                                tf.float32,
+                                initializer=tf.constant_initializer(0.0))
+            conv = tf.nn.bias_add(conv, b)
         
     return conv
 
@@ -114,7 +121,9 @@ def _resblk_first(x, out_channel, kernel, stride, is_training=True, name='unit')
         if stride == 1:
             shortcut = tf.identity(x, name='shortcut')
         else:
-            shortcut = _max_pool(x, 3, stride, 'SAME', name='shortcut')
+            # apparently resnet do not use max pooling
+            #shortcut = _max_pool(x, 3, stride, 'SAME', name='shortcut')
+            shortcut = _avg_pool(x, 3, stride, 'SAME', name='shortcut')
         if in_channel != out_channel:
             if projection == True:
                 with tf.variable_scope('shortcut'):
@@ -158,6 +167,8 @@ def resnet20(x):
         is_training = tf.placeholder(tf.bool, [], 'is_training')
 
         with tf.variable_scope('conv1'):
+            # bias is not used for the convolutions because batch norm layers
+            # deal with both scaling and the shifting of the output.
             x = _conv2d(x, 16, 3, 1, name='conv1')
             x = _bn(x, is_training, name='bn1')
             x = _relu(x, 0.0, name='relu1')
@@ -178,25 +189,17 @@ def resnet20(x):
             x = _resblk(x, 64, 3, is_training=is_training, name='conv4_3')
 
         with tf.variable_scope('fc5'):
-            x = _avg_pool(x, 8, 8, 'SAME', name='gap')
+            x = _avg_pool(x, 8, 8, name='gap')
             x = tf.layers.flatten(x)
             logits = _fc(x, 10, name='fc5')
     return logits
 
 def loss(logits, labels):
     with tf.name_scope('loss'):
-        weight_decay = tf.placeholder(tf.float32, name='weight_decay')
-
         # softmax loss
         entropy = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
         loss = tf.reduce_mean(entropy, name='loss')
         
-        # weight decay
-        costs = [tf.nn.l2_loss(var) for var in tf.get_collection('WEIGHT_DECAY')]
-        l2_loss = tf.multiply(weight_decay, tf.add_n(costs))
-
-        loss += l2_loss
-
     return loss
 
 def summary(loss):
@@ -211,6 +214,15 @@ def training(loss):
     with tf.name_scope('train'):
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
         
+        # weight decay
+        weight_decay = tf.placeholder(tf.float32, name='weight_decay')
+        
+        costs = [tf.nn.l2_loss(var) for var in tf.get_collection('WEIGHT_DECAY')]
+        l2_loss = tf.multiply(weight_decay, tf.add_n(costs))
+        
+        loss += l2_loss
+
+        # optimizer
         global_step = tf.Variable(0, dtype=tf.int32, trainable=False, name='global_step')
         #optimizer = tf.train.AdamOptimizer(learning_rate, name='optimizer')
         optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, 

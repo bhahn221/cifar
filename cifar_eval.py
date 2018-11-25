@@ -43,7 +43,7 @@ def main(args):
     test_op = graph.get_tensor_by_name('test/Sum:0')
     learning_rate = graph.get_tensor_by_name('train/learning_rate:0')
     is_training = graph.get_tensor_by_name('resnet20/is_training:0')
-    weight_decay = graph.get_tensor_by_name('loss/weight_decay:0')
+    weight_decay = graph.get_tensor_by_name('train/weight_decay:0')
     
     # prepair for testing
     start_time = time.time()

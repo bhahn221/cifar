@@ -15,11 +15,11 @@ MODEL='resnet20'
 SKIP_STEP=100
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
-TRAIN_BATCH_SIZE=128
+TRAIN_BATCH_SIZE=256
 TEST_BATCH_SIZE=500
 LEARNING_RATE=1e-3
 WEIGHT_DECAY=1e-3
-N_EPOCH=164
+N_EPOCH=328
 LOG='train_log'
 
 def log(file_name, message):
@@ -74,7 +74,7 @@ def main(args):
     test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
     learning_rate = graph.get_tensor_by_name('train/learning_rate:0')
     is_training = graph.get_tensor_by_name('resnet20/is_training:0')
-    weight_decay = graph.get_tensor_by_name('loss/weight_decay:0')
+    weight_decay = graph.get_tensor_by_name('train/weight_decay:0')
 
     # prepair for training
     initial_step = sess.run(global_step)
@@ -106,7 +106,7 @@ def main(args):
             total_loss = 0.0
             saver.save(sess, 'checkpoints/'+MODEL+'/'+MODEL, index)
 
-        if (index + 1) % (n_batch * 10) == 0:
+        if (index + 1) % (n_batch * 2) == 0:
             #print('Check Test Accuracy')
             log(LOG, 'Check Test Accuracy')
 
