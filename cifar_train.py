@@ -17,7 +17,12 @@ CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
 TRAIN_BATCH_SIZE=256
 TEST_BATCH_SIZE=500
-LEARNING_RATE=1e-3
+# initial learning rate
+LEARNING_RATE=1e-1
+# varying learning rate
+LEARNING_RATE_DICT = {0: 1e-1,
+                      32000: 1e-2,
+                      48000: 1e-3}
 WEIGHT_DECAY=1e-3
 N_EPOCH=328
 LOG='train_log'
@@ -87,6 +92,13 @@ def main(args):
     # run train
     total_loss = 0.0
     for index in range(initial_step, n_batch * N_EPOCH):
+        # change learning rate dynamically
+        iteration = index
+        if iteration in LEARNING_RATE_DICT.keys():
+            LEARNING_RATE = LEARNING_RATE_DICT[iteration]
+            #print('Learning rate change to {}'.format(LEARNING_RATE))
+            log(LOG, 'Learning rate change to {}'.format(LEARNING_RATE))
+
         if index % n_batch == 0:
             #print('Epoch: {}'.format(index / n_batch))
             log(LOG, 'Epoch: {}'.format(index / n_batch))
