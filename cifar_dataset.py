@@ -45,7 +45,7 @@ def change_light(image, label):
     return image, label
 
 def random_crop(image, label):
-    padded_image = tf.pad(image, [[4,4], [4,4], [0,0]], 'CONSTANT')
+    padded_image = tf.pad(image, [[2,2], [2,2], [0,0]], 'CONSTANT')
     cropped_image = tf.random_crop(padded_image, [32, 32, 3])
 
     return image, label
@@ -76,7 +76,7 @@ def inputs():
         train_dataset = train_dataset.map(flip)
         #train_dataset = train_dataset.map(change_light)
         train_dataset = train_dataset.map(random_crop)
-        train_dataset = train_dataset.shuffle(train_dataset_size)
+        train_dataset = train_dataset.shuffle(1000+batch_size*3)
         train_dataset = train_dataset.batch(batch_size)
         train_dataset = train_dataset.prefetch(batch_size*5)
 

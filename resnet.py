@@ -229,6 +229,13 @@ def training(loss):
                                                momentum=0.9,
                                                use_nesterov=True,
                                                name='optimizer')
+
+        # gradient clipping
+        gradients, variables = zip(*optimizer.compute_gradients(loss))
+        gradients, _ = tf.clip_by_global_norm(gradients, 1.0)
+        optimize = optimizer.apply_gradients(zip(gradients, variables))
+
+        # optimizer minimizes loss
         train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
     
     return train_op

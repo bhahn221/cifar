@@ -21,10 +21,12 @@ TEST_BATCH_SIZE=500
 LEARNING_RATE=1e-1
 # varying learning rate
 LEARNING_RATE_DICT = {0: 1e-1,
-                      32000: 1e-2,
-                      48000: 1e-3}
+                      164: 1e-2,
+                      246: 1e-3}
 WEIGHT_DECAY=1e-3
 N_EPOCH=328
+#N_EPOCH=190
+#N_EPOCH=164
 LOG='train_log'
 
 def log(file_name, message):
@@ -63,10 +65,12 @@ def main(args):
     writer = tf.summary.FileWriter('./graphs/'+MODEL, sess.graph)
 
     # load from checkpoint if it exists
+    loaded = False
     utils.make_dir('checkpoints')
     utils.make_dir('checkpoints/'+MODEL)
     ckpt = tf.train.get_checkpoint_state(os.path.dirname('checkpoints/'+MODEL+'/checkpoint'))
     if ckpt and ckpt.model_checkpoint_path:
+        loaded = True
         saver.restore(sess, ckpt.model_checkpoint_path)
 
     # get dropout & global_step
@@ -92,10 +96,19 @@ def main(args):
     # run train
     total_loss = 0.0
     for index in range(initial_step, n_batch * N_EPOCH):
+        epoch = float(index) / n_batch
+        # if loaded
+        if loaded == True:
+            for key in LEARNING_RATE_DICT.keys():
+                if epoch >= key:
+                    LEARNING_RATE = LEARNING_RATE_DICT[key]
+                    #print('Learning rate change to {}'.format(LEARNING_RATE))
+                    log(LOG, 'Learning rate change to {}'.format(LEARNING_RATE))
+            loaded = False
+
         # change learning rate dynamically
-        iteration = index
-        if iteration in LEARNING_RATE_DICT.keys():
-            LEARNING_RATE = LEARNING_RATE_DICT[iteration]
+        if epoch in LEARNING_RATE_DICT.keys():
+            LEARNING_RATE = LEARNING_RATE_DICT[epoch]
             #print('Learning rate change to {}'.format(LEARNING_RATE))
             log(LOG, 'Learning rate change to {}'.format(LEARNING_RATE))
 
