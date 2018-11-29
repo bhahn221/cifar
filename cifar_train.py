@@ -22,7 +22,7 @@ LEARNING_RATE=1e-1
 # varying learning rate
 LEARNING_RATE_DICT = {0: 1e-1,
                       164: 1e-2,
-                      246: 1e-3}
+                      246: 1e-3} # instead of 246 which explodes
 WEIGHT_DECAY=1e-3
 N_EPOCH=328
 #N_EPOCH=190

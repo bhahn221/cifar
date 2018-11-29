@@ -138,7 +138,7 @@ def main(args):
                 #print('Average loss at step {}: {:5.5f}'.format(index + 1, total_loss / SKIP_STEP))
                 log(LOG, 'Average loss at step {}: {:5.5f}'.format(index + 1, total_loss / SKIP_STEP))
                 total_loss = 0.0
-                saver.save(sess, 'checkpoints/'+MODEL+'/pruned_'+MODEL, index)
+                saver.save(sess, 'checkpoints/'+MODEL+'_pruned/pruned_'+MODEL, index)
 
         #print('Optimization Finished!')
         #print('Total time: {0} seconds'.format(time.time() - start_time))
