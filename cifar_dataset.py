@@ -22,20 +22,15 @@ f = open('cifar_mean_image.pickle', 'rb')
 cifar_mean_image = pickle.load(f)
 f.close()
 
-def normalize_train(image, label):
-    image = (tf.cast(image, tf.float32) - cifar_mean_image['train_mean']) / cifar_mean_image['train_dev']
+def normalize(image, label):
+    normalized_image = (tf.cast(image, tf.float32) - cifar_mean_image['train_mean']) / cifar_mean_image['train_dev']
 
-    return image, label
+    return normalized_image, label
 
-def normalize_test(image, label):
-    image = (tf.cast(image, tf.float32) - cifar_mean_image['train_mean']) / cifar_mean_image['train_dev']
-    
-    return image, label
+def random_flip(image, label):
+    flipped_image = tf.image.random_flip_left_right(image)
 
-def flip(image, label):
-    image = tf.image.random_flip_left_right(image)
-
-    return image, label
+    return flipped_image, label
 
 def change_light(image, label):
     image = tf.image.random_brightness(image, max_delta=0.4)
@@ -45,10 +40,10 @@ def change_light(image, label):
     return image, label
 
 def random_crop(image, label):
-    padded_image = tf.pad(image, [[4,4], [4,4], [0,0]], 'CONSTANT')
+    padded_image = tf.pad(image, [[2,2], [2,2], [0,0]], 'CONSTANT')
     cropped_image = tf.random_crop(padded_image, [32, 32, 3])
 
-    return image, label
+    return cropped_image, label
 
 def decode(serialized_example):
     features = tf.parse_single_example(
@@ -72,17 +67,16 @@ def inputs():
         train_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TRAIN_FILE)
         train_dataset = train_dataset.repeat()
         train_dataset = train_dataset.map(decode)
-        train_dataset = train_dataset.map(normalize_train) # commented while calculating mean
-        train_dataset = train_dataset.map(flip)
-        #train_dataset = train_dataset.map(change_light)
+        train_dataset = train_dataset.map(random_flip)
         train_dataset = train_dataset.map(random_crop)
+        train_dataset = train_dataset.map(normalize)
         train_dataset = train_dataset.shuffle(1000+batch_size*3)
         train_dataset = train_dataset.batch(batch_size)
         train_dataset = train_dataset.prefetch(batch_size*5)
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
         test_dataset = test_dataset.map(decode)
-        test_dataset = test_dataset.map(normalize_test) # commented while calculating mean
+        test_dataset = test_dataset.map(normalize)
         test_dataset = test_dataset.batch(batch_size)
         test_dataset = test_dataset.prefetch(batch_size*5)
 
