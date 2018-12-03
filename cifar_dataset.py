@@ -7,6 +7,8 @@ import tensorflow as tf
 import numpy as np
 import pickle
 
+import matplotlib.pyplot as plt # testing functionality of pipeline
+
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import image_ops
 from tensorflow.python.ops import math_ops
@@ -84,3 +86,30 @@ def inputs():
         train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')
         test_dataset_init_op = iterator.make_initializer(test_dataset, name='test_dataset_init')
     return iterator.get_next()
+
+# Test code for the dataset
+def main():
+    sess = tf.Session()
+    
+    x, y = inputs()
+    
+    graph = tf.get_default_graph()
+    batch_size = graph.get_tensor_by_name('input/batch_size:0')
+    train_dataset_init = graph.get_operation_by_name('input/train_dataset_init')
+    test_dataset_init = graph.get_operation_by_name('input/test_dataset_init')
+    
+    sess.run(train_dataset_init, feed_dict={batch_size: 2}) 
+    #sess.run(val_dataset_init, feed_dict={batch_size: 2}) 
+    
+    image, label = sess.run([x, y])
+    print label[0], get_human_readable_label(label[0])
+    print np.max(image[0])
+    plt.imshow(image[0])
+    plt.show()
+    print label[1], get_human_readable_label(label[1])
+    print np.max(image[1])
+    plt.imshow(image[1])
+    plt.show()
+
+if __name__ == '__main__':
+    main()
