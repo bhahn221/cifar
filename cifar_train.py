@@ -13,6 +13,7 @@ import resnet
 MODEL='resnet20'
 
 SKIP_STEP=100
+TEST_STEP=5
 CIFAR_TRAIN_SIZE=cifar_dataset.train_dataset_size
 CIFAR_TEST_SIZE=cifar_dataset.test_dataset_size
 TRAIN_BATCH_SIZE=256
@@ -89,6 +90,7 @@ def main(args):
     initial_step = sess.run(global_step)
 
     start_time = time.time()
+    temp_time = start_time
     n_batch = int(CIFAR_TRAIN_SIZE / TRAIN_BATCH_SIZE)
     
     sess.run(train_dataset_init, feed_dict={batch_size: TRAIN_BATCH_SIZE}) 
@@ -127,11 +129,13 @@ def main(args):
 
         if (index + 1) % SKIP_STEP == 0:
             #print('Average loss at step {}: {:5.5f}'.format(index + 1, total_loss / SKIP_STEP))
-            log(LOG, 'Average loss at step {}: {:5.5f}'.format(index + 1, total_loss / SKIP_STEP))
+            log(LOG, 'loss at step {}: {:5.5f} / time: {} seconds'.format(index + 1, total_loss / SKIP_STEP, time.time() - temp_time))
+            temp_time = time.time()
+
             total_loss = 0.0
             saver.save(sess, 'checkpoints/'+MODEL+'/'+MODEL, index)
 
-        if (index + 1) % (n_batch * 2) == 0:
+        if (index + 1) % (n_batch * TEST_STEP) == 0:
             #print('Check Test Accuracy')
             log(LOG, 'Check Test Accuracy')
 

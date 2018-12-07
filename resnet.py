@@ -77,8 +77,8 @@ def _bn(x, is_training, name=None):
                                     tf.float32,
                                     initializer=tf.ones_initializer())
         update = 1.0 - decay
-        mu = mu.assign_sub(update * (mu - batch_mean))
-        sigma = sigma.assign_sub(update * (sigma - batch_var))
+        mu = mu.assign_sub(tf.where(is_training, update * (mu - batch_mean), tf.zeros_like(mu)))
+        sigma = sigma.assign_sub(tf.where(is_training, update * (sigma - batch_var), tf.zeros_like(mu)))
 
         mean, var = tf.cond(tf.cast(is_training, tf.bool), 
                                     lambda: (batch_mean, batch_var), 
@@ -164,49 +164,52 @@ def _resblk(x, out_channel, kernel, is_training=True, name='unit'):
 
 def resnet20(x):
     with tf.variable_scope('resnet20'):
-        is_training = tf.placeholder(tf.bool, [], 'is_training')
+        with tf.device('GPU:0'):
+            is_training = tf.placeholder(tf.bool, [], 'is_training')
 
-        with tf.variable_scope('conv1'):
-            # bias is not used for the convolutions because batch norm layers
-            # deal with both scaling and the shifting of the output.
-            x = _conv2d(x, 16, 3, 1, name='conv1')
-            x = _bn(x, is_training, name='bn1')
-            x = _relu(x, 0.0, name='relu1')
+            with tf.variable_scope('conv1'):
+                # bias is not used for the convolutions because batch norm layers
+                # deal with both scaling and the shifting of the output.
+                x = _conv2d(x, 16, 3, 1, name='conv1')
+                x = _bn(x, is_training, name='bn1')
+                x = _relu(x, 0.0, name='relu1')
 
-        with tf.variable_scope('conv2'):
-            x = _resblk(x, 16, 3, is_training=is_training, name='conv2_1')
-            x = _resblk(x, 16, 3, is_training=is_training, name='conv2_2')
-            x = _resblk(x, 16, 3, is_training=is_training, name='conv2_3')
-        
-        with tf.variable_scope('conv3'):
-            x = _resblk_first(x, 32, 3, 2, is_training=is_training, name='conv3_1')
-            x = _resblk(x, 32, 3, is_training=is_training, name='conv3_2')
-            x = _resblk(x, 32, 3, is_training=is_training, name='conv3_3')
+            with tf.variable_scope('conv2'):
+                x = _resblk(x, 16, 3, is_training=is_training, name='conv2_1')
+                x = _resblk(x, 16, 3, is_training=is_training, name='conv2_2')
+                x = _resblk(x, 16, 3, is_training=is_training, name='conv2_3')
+            
+            with tf.variable_scope('conv3'):
+                x = _resblk_first(x, 32, 3, 2, is_training=is_training, name='conv3_1')
+                x = _resblk(x, 32, 3, is_training=is_training, name='conv3_2')
+                x = _resblk(x, 32, 3, is_training=is_training, name='conv3_3')
 
-        with tf.variable_scope('conv4'):
-            x = _resblk_first(x, 64, 3, 2, is_training=is_training, name='conv4_1')
-            x = _resblk(x, 64, 3, is_training=is_training, name='conv4_2')
-            x = _resblk(x, 64, 3, is_training=is_training, name='conv4_3')
+            with tf.variable_scope('conv4'):
+                x = _resblk_first(x, 64, 3, 2, is_training=is_training, name='conv4_1')
+                x = _resblk(x, 64, 3, is_training=is_training, name='conv4_2')
+                x = _resblk(x, 64, 3, is_training=is_training, name='conv4_3')
 
-        with tf.variable_scope('fc5'):
-            x = _avg_pool(x, 8, 8, name='gap')
-            x = tf.layers.flatten(x)
-            logits = _fc(x, 10, name='fc5')
+            with tf.variable_scope('fc5'):
+                x = _avg_pool(x, 8, 8, name='gap')
+                x = tf.layers.flatten(x)
+                logits = _fc(x, 10, name='fc5')
     return logits
 
 def loss(logits, labels):
     with tf.name_scope('loss'):
-        # softmax loss
-        entropy = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
-        loss = tf.reduce_mean(entropy, name='loss')
+        with tf.device('GPU:0'):
+            # softmax loss
+            entropy = tf.losses.sparse_softmax_cross_entropy(labels=labels, logits=logits)
+            loss = tf.reduce_mean(entropy, name='loss')
         
     return loss
 
 def summary(loss):
     with tf.name_scope('summary'):
-        tf.summary.scalar('loss', loss)
-        tf.summary.histogram('histogram loss', loss)
-        summary_op = tf.summary.merge_all()
+        with tf.device('CPU:0'):
+            tf.summary.scalar('loss', loss)
+            tf.summary.histogram('histogram loss', loss)
+            summary_op = tf.summary.merge_all()
 
     return summary_op
 
@@ -214,35 +217,31 @@ def training(loss):
     with tf.name_scope('train'):
         learning_rate = tf.placeholder(tf.float32, name='learning_rate')
         
-        # weight decay
-        weight_decay = tf.placeholder(tf.float32, name='weight_decay')
-        
-        costs = [tf.nn.l2_loss(var) for var in tf.get_collection('WEIGHT_DECAY')]
-        l2_loss = tf.multiply(weight_decay, tf.add_n(costs))
-        
-        loss += l2_loss
-
         # optimizer
         global_step = tf.Variable(0, dtype=tf.int32, trainable=False, name='global_step')
-        #optimizer = tf.train.AdamOptimizer(learning_rate, name='optimizer')
         optimizer = tf.train.MomentumOptimizer(learning_rate=learning_rate, 
                                                momentum=0.9,
                                                use_nesterov=True,
                                                name='optimizer')
+        
+        # weight decay
+        weight_decay = tf.placeholder(tf.float32, name='weight_decay')
+        
+        with tf.device('GPU:0'):
+            costs = [tf.nn.l2_loss(var) for var in tf.get_collection('WEIGHT_DECAY')]
+            l2_loss = tf.multiply(weight_decay, tf.add_n(costs))
+            
+            loss += l2_loss
 
-        # gradient clipping
-        gradients, variables = zip(*optimizer.compute_gradients(loss))
-        gradients, _ = tf.clip_by_global_norm(gradients, 5.0)
-        optimize = optimizer.apply_gradients(zip(gradients, variables))
-
-        # optimizer minimizes loss
-        train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
+            # optimizer minimizes loss
+            train_op = optimizer.minimize(loss, global_step=global_step, name='train_op')
     
     return train_op
 
 def testing(logits, labels):
     with tf.name_scope('test'):
-        correct = tf.nn.in_top_k(logits, labels, 1)
-        test_op = tf.reduce_sum(tf.cast(correct, tf.int32))
+        with tf.device('CPU:0'):
+            correct = tf.nn.in_top_k(logits, labels, 1)
+            test_op = tf.reduce_sum(tf.cast(correct, tf.int32))
 
     return test_op

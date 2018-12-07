@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt # testing functionality of pipeline
 from tensorflow.python.ops import array_ops
 from tensorflow.python.ops import image_ops
 from tensorflow.python.ops import math_ops
+from tensorflow.contrib.data.python.ops import prefetching_ops
 
 MNIST_DIRECTORY = '/home/bhahn221/dataset/cifar10/'
 TRAIN_FILE      = 'cifar10_train.tfrecord'
@@ -23,6 +24,9 @@ test_dataset_size = 10000
 f = open('cifar_mean_image.pickle', 'rb')
 cifar_mean_image = pickle.load(f)
 f.close()
+
+THREADS = 4
+READERS = 2
 
 def normalize(image, label):
     normalized_image = (tf.cast(image, tf.float32) - cifar_mean_image['train_mean']) / cifar_mean_image['train_dev']
@@ -68,23 +72,26 @@ def inputs():
 
         train_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TRAIN_FILE)
         train_dataset = train_dataset.repeat()
-        train_dataset = train_dataset.map(decode)
-        train_dataset = train_dataset.map(random_flip)
-        train_dataset = train_dataset.map(random_crop)
-        train_dataset = train_dataset.map(normalize)
-        train_dataset = train_dataset.shuffle(1000+batch_size*3)
+        train_dataset = train_dataset.map(decode, num_parallel_calls=THREADS)
+        train_dataset = train_dataset.map(random_flip, num_parallel_calls=THREADS)
+        train_dataset = train_dataset.map(random_crop, num_parallel_calls=THREADS)
+        train_dataset = train_dataset.map(normalize, num_parallel_calls=THREADS)
+        train_dataset = train_dataset.shuffle(batch_size*8)
         train_dataset = train_dataset.batch(batch_size)
-        train_dataset = train_dataset.prefetch(batch_size*5)
+        train_dataset = train_dataset.prefetch(batch_size*8)
+        train_dataset = train_dataset.apply(prefetching_ops.copy_to_device('/GPU:0'))
 
         test_dataset = tf.data.TFRecordDataset(MNIST_DIRECTORY+TEST_FILE)
-        test_dataset = test_dataset.map(decode)
-        test_dataset = test_dataset.map(normalize)
+        test_dataset = test_dataset.map(decode, num_parallel_calls=THREADS)
+        test_dataset = test_dataset.map(normalize, num_parallel_calls=THREADS)
         test_dataset = test_dataset.batch(batch_size)
-        test_dataset = test_dataset.prefetch(batch_size*5)
+        test_dataset = test_dataset.prefetch(batch_size*8)
+        test_dataset = test_dataset.apply(prefetching_ops.copy_to_device('/GPU:0'))
 
-        iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)
-        train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')
-        test_dataset_init_op = iterator.make_initializer(test_dataset, name='test_dataset_init')
+        with tf.device('/GPU:0'):
+            iterator = tf.data.Iterator.from_structure(train_dataset.output_types, train_dataset.output_shapes)
+            train_dataset_init_op = iterator.make_initializer(train_dataset, name='train_dataset_init')
+            test_dataset_init_op = iterator.make_initializer(test_dataset, name='test_dataset_init')
     return iterator.get_next()
 
 # Test code for the dataset
